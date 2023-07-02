@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState ,useContext} from 'react';
 import FormInput from '../form-input/form-input.component';
 import './sign-up-form.styles.scss';
+import { UserContext } from '../contexts/user.context';
 import Button from '../button/button.component';
 import {
   createAuthUserWithEmailAndPassword,
@@ -18,7 +19,7 @@ const SignUpForm = () => {
   const [formFeilds, setFormFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFeilds;
 
-  console.log(formFeilds);
+  const {setCurrentUser}=useContext(UserContext);
 
   const onChangehandler = (event) => {
     const { name, value } = event.target;
@@ -40,6 +41,7 @@ const SignUpForm = () => {
         );
 
         await createUserDocFromAuth(user, { displayName });
+        setCurrentUser(user);
         setFormFields(defaultFormFields);
       } catch (error) {
         console.log(error);
